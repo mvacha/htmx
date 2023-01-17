@@ -1,0 +1,100 @@
+﻿@page
+@model EditModel
+@using Explorations.Models
+
+@{
+    ViewData["Title"] = Model.Item is null ? "Add a plant" : Model.Item.Name;
+}
+
+@if (Model.IsEdit)
+{
+    <partial name="_DeleteModal" model="@Model.Item" />
+}
+
+<!-- Main modal -->
+<div class="relative overflow-x-auto shadow-md max-w-2xl sm:rounded-lg">
+    <div class="relative w-full h-full md:h-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal body -->
+            <form method="post">
+                <div class="p-6 space-y-6">
+                    <div class="grid gap-6 mb-6 md:grid-cols-2">
+                        <div>
+                            <label asp-for="Item.Name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name </label>
+                            <input type="text" asp-for="Item.Name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Cactus John" required>
+                        </div>
+                        <div>
+                            <label asp-for="Item.Variety" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Variety</label>
+                            <select asp-for="Item.Variety" asp-items="Model.Varieties" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                            </select>
+                        </div>
+
+                        <div>
+                            <label asp-for="Item.PurchasedDate" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date of purchase</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                    <svg aria-hidden="true" class="w-5 h-5 text-gray-500 dark:text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"></path></svg>
+                                </div>
+                                <input datepicker datepicker-format="dd.mm.yyyy" required asp-for="Item.PurchasedDate" datepicker-orientation="bottom" datepicker-autohide type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Choose date">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-6">
+                        <label for="visitors" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type</label>
+                        <ul class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    @Html.RadioButtonFor(m => m.Item.Kind, PlantKind.Plant, new { @class = "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" })
+                                    <label class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">🪴 Plant</label>
+                                </div>
+                            </li>
+                            <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
+                                <div class="flex items-center pl-3">
+                                    @Html.RadioButtonFor(m => m.Item.Kind, PlantKind.Cactus, new { @class = "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" })
+                                    <label class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">🌵 Cactus</label>
+                                </div>
+                            </li>
+                            <li class="w-full">
+                                <div class="flex items-center pl-3">
+                                    @Html.RadioButtonFor(m => m.Item.Kind, PlantKind.Tree, new { @class = "w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" })
+                                    <label class="w-full py-3 ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">🌳 Tree</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="mb-6">
+                        <label asp-for="Item.Location" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Location</label>
+                        <input asp-for="Item.Location" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="On the shelf in the corner">
+                    </div>
+                    <div class="flex mb-6">
+                        <div class="flex items-center h-5">
+                            <input aria-describedby="helper-checkbox-text" asp-for="Item.IsDead" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        </div>
+                        <div class="ml-2 text-sm">
+                            <label asp-for="Item.IsDead" class="font-medium text-gray-900 dark:text-gray-300">Dead 😵</label>
+                            <p id="helper-checkbox-text" class="text-xs font-normal text-gray-500 dark:text-gray-300">Check if plant has dies.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="flex items-left p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
+                    <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+                    <a asp-page="Index" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">Close</a>
+                    <div class="flex-1"></div>
+                    @if (Model.IsEdit)
+                    {
+                        <button data-modal-target="delete-modal" data-modal-toggle="delete-modal" 
+                            class="block text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800" type="button">
+                            Delete
+                        </button>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.2/datepicker.min.js"></script>
+}

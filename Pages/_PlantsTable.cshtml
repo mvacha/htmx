@@ -1,0 +1,77 @@
+﻿@model TableModel<Plant>
+@using Explorations.Models
+
+<partial name="_TableSearch" model="Model"/>
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+<table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+            <th scope="col" class="p-4">
+                <div class="flex items-center">
+                    <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="checkbox-all" class="sr-only">checkbox</label>
+                </div>
+            </th>
+            <th scope="col" class="px-1 py-3">
+                <partial name="_TableColHead" model="(Model, nameof(Plant.Id))" />
+            </th>
+            <th scope="col" class="px-3 py-3">
+                <partial name="_TableColHead" model="(Model, nameof(Plant.Name))" />
+            </th>
+            <th scope="col" class="px-3 py-3">
+                <partial name="_TableColHead" model="(Model, nameof(Plant.Variety))" />
+            </th>
+            <th scope="col" class="px-3 py-3">
+                <partial name="_TableColHead" , model="(Model, nameof(Plant.Kind))" />
+            </th>
+            <th scope="col" class="px-3 py-3">
+                <partial name="_TableColHead" , model="(Model, nameof(Plant.PurchasedDate))" />
+            </th>
+            <th scope="col" class="px-3 py-3">
+                <a asp-route-orderBy=""
+                    asp-route-orderDescending=""
+                    asp-route-search=@Model.Search
+                    asp-route-skip=@Model.Skip>
+                    Actions
+                </a> 
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var Plant in Model.Data)
+        {
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                <td class="w-4 p-4">
+                    <div class="flex items-center">
+                        <input id="checkbox-table-1" type="checkbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                        <label for="checkbox-table-1" class="sr-only">checkbox</label>
+                    </div>
+                </td>
+                <td class="px-1 py-3 text-left">
+                    @Plant.Id
+                </td>
+                <td scope="row" class="px-3 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    @Plant.Name
+                    <partial name="_AliveStatus" model="@(!Plant.IsDead)" />
+                </td>
+                <td class="px-3 py-4">
+                    @Plant.Variety
+                </td>
+                <td class="px-3 py-4">
+                    @Plant.Kind
+                </td>
+                <td class="px-3 py-4">
+                    @Plant.PurchasedDate.ToString("d")
+                </td>
+                <td class="px-3 py-4">
+                    <a asp-page="Edit" asp-route-id="@Plant.Id" class="font-medium text-primary-700 dark:text-primary-800 hover:underline">Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+</div>
+
+<partial name="_TablePagination" model="Model"/>
