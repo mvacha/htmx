@@ -4,6 +4,8 @@ namespace Explorations.Models;
 
 public class TableModel<T>
 {
+    public string? SuccessMessage { get; set; }
+
     [BindProperty(SupportsGet = true)]
     public string OrderBy { get; set; } = "Id";
 

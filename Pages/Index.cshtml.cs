@@ -1,7 +1,7 @@
 ﻿using Explorations.Services;
+using Htmx;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Explorations.Pages
@@ -13,19 +13,12 @@ namespace Explorations.Pages
         [BindProperty(SupportsGet = true)]
         public TableModel<Plant> Table { get; set; } = new TableModel<Plant>();
 
-        public IList<SelectListItem> Varieties { get; init; }
-
-        public Plant? PlantsToEdit { get; set; }
-
         public IndexModel(PlantsService plantsService)
         {
             _plantsService = plantsService;
-            Varieties = _plantsService.GetPlantVarieties()
-                .Select((v, i) => new SelectListItem() { Text = v, Value = i.ToString() })
-                .ToList();
         }
 
-        public void OnGet()
+        public IActionResult OnGet()
         {
             IEnumerable<Plant> Plants = _plantsService.GetPlants();
 
@@ -50,7 +43,9 @@ namespace Explorations.Pages
             Table.HasMoreData = Plants.Skip(Table.Skip + Table.PageSize).Any();
 
             if (Request.Query.ContainsKey("Message"))
-                ViewData["SuccessMessage"] = Request.Query["Message"].ToString();
+                Table.SuccessMessage = Request.Query["Message"].ToString();
+
+            return Request.IsHtmx() ? Partial("_PlantsTable", Table) : Page();
         }
     }
 }

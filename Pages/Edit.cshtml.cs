@@ -25,7 +25,7 @@ namespace Explorations.Pages
                 .ToList();
         }
 
-        public void OnGet(int? id)
+        public IActionResult OnGet(int? id)
         {
             if (id.HasValue)
             {
@@ -33,6 +33,8 @@ namespace Explorations.Pages
                 Varieties.First(v => v.Text.Equals(Item.Variety)).Selected = true;
                 IsEdit = true;
             }
+
+            return Partial("_EditModal", this);
         }
 
         public IActionResult OnPost(int? id)
@@ -53,12 +55,15 @@ namespace Explorations.Pages
             }
         }
 
-        public IActionResult OnGetDelete(int id)
+        public IActionResult OnPostDelete(int id)
         {
             var plant = _plantsService.GetPlant(id);
 
             _plantsService.DeletePlant(id);
+
             return RedirectToPage(nameof(Index), new { Message = $"Deleted plant {plant.Name}." });
         }
+
+        public IActionResult OnGetDelete(int id) => Partial("_DeleteModal", _plantsService.GetPlant(id));
     }
 }
