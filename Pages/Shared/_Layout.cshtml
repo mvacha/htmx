@@ -227,17 +227,11 @@
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://unpkg.com/flowbite@1.6.3/dist/flowbite.min.js"></script>
-    <script type="importmap">
-        {
-          "imports": {
-            "datepicker": "https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.3/datepicker.js"
-          }
-        }
-    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 
     <script type="module">
-        //import { Datepicker } from 'datepicker';
+        import { Datepicker } from 'https://cdn.jsdelivr.net/npm/@@themesberg/tailwind-datepicker/+esm'
 
         //When htmx swapps (and settles) a modal, show it
         document.body.addEventListener('htmx:afterSettle', function(evt) {
@@ -252,8 +246,7 @@
 
                 //init datepickers in modals
                 document.querySelectorAll('input[datepicker]').forEach(function (el) {
-                    //what here?
-                    //new Datepicker(el, null);
+                    new Datepicker(el, {});
                 });
 
                 modal.show();
